@@ -1,0 +1,103 @@
+import React, { useContext, useState } from "react";
+import { Context } from "../Context/Provider";
+import Form from "../components/Form";
+import "../App.css";
+import { CiEdit } from "react-icons/ci";
+import { FaRegTrashAlt } from "react-icons/fa";
+import { FaCheckDouble } from "react-icons/fa6";
+import { VscError } from "react-icons/vsc";
+
+function Home() {
+  const [isRegistering, setIsRegistering] = useState(false);
+  const [editing, setIsEditing] = useState(false);
+  const [isSeeingAll, setIsSeeingAll] = useState(false)
+  const [id, setId] = useState();
+  const { tasks, setTasks } = useContext(Context);
+  const [actualTask, setActualTask] = useState(null)
+
+  function remove(id) {
+    setTasks([...tasks.filter((e) => e.id != id)]);
+  }
+
+  return (
+    <div className="w-[100%] min-h-[100vh] flex items-center flex-col gap-[50px] mt-20">
+      <button
+        className={`bg-blue-950 text-white text-xl px-4 py-2 rounded-md ${(isSeeingAll || isRegistering || editing) && 'blur-sm'}`}
+        onClick={() => setIsRegistering(!isRegistering)}
+      >
+        Register new task
+      </button>
+      {isRegistering && (
+        <Form
+          setIsEditing={setIsEditing}
+          id={id}
+          setIsRegistering={setIsRegistering}
+          editing={editing}
+        />
+      )}
+      
+      {isSeeingAll && (
+        <div className="overlay-seeing-task text-xl px-5 py-1 gap-3">
+            <button onClick={() => setIsSeeingAll(false)} className="w-[100%] flex justify-end mr-5 mt-5 text-red-500 hover:text-red-700">X</button>
+
+            <div className="w-[100%] overflow-x-auto overflow-y-auto p-5 flex flex-col gap-5">
+                <section className=" flex flex-col gap-1">
+                    <p className="text-2xl text-blue-500">Task</p>
+                    <p className="w-[90%] ml-2">{actualTask?.task}</p>
+                </section>
+
+                <section className=" flex flex-col gap-2">
+                    <p className="text-2xl  text-blue-500">Status</p>
+                    <p className="capitalize flex gap-2 items-center ml-2">{actualTask?.status} {actualTask?.status == "finished" ? (
+                  <FaCheckDouble color="green" />
+                ) : (
+                  <VscError />
+                )}</p>
+                </section>
+
+            </div>
+        </div>
+      )}
+
+      <div className="text-xl gap-10 w-[100%]" id="tasks">
+        {tasks?.map((e) => (
+          <div
+            className={`flex gap-10 bg-gray-300 border-2 w-[30%] m-auto border-gray-400 justify-between overflow-x-hidden rounded-md p-2 ${(isSeeingAll || isRegistering || editing) && 'blur-sm'}`}
+            key={e?.id}
+          >
+            <p onClick={() => {
+                setActualTask(e)
+                setIsSeeingAll(!isSeeingAll)
+            }} title={e?.task} className="capitalize cursor-pointer">
+              {e?.task?.slice(0, 30)} {e?.task?.length > 50 && '....'} 
+            </p>
+            <div className="flex gap-4 items-center text-2xl">
+              <p>
+                {e?.status == "finished" ? (
+                  <FaCheckDouble color="green" />
+                ) : (
+                  <VscError />
+                )}
+              </p>
+              <button
+                onClick={() => {
+                  setIsEditing(true);
+                  setIsRegistering(true);
+                  setId(e?.id);
+                }}
+                className=""
+              >
+                <CiEdit color="blue" />
+              </button>
+              <button onClick={() => remove(e.id)} className="">
+                <FaRegTrashAlt color="red" />
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export default Home;

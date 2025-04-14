@@ -1,0 +1,34 @@
+.overlay {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* this moves it back by half its own width/height */
+    width: 30vw;
+    height: 60vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    background-color: rgb(240, 240, 240);
+    z-index: 1000;
+    border-radius: 40px;
+    border: 1px solid rgba(87, 87, 177, 0.512);
+}
+
+.task_form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.task_form label {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    align-items: center;
+}
+
+.task_form input, .task_form select {
+    box-shadow: 4px 5px 3px 4px gray;
+    outline: none;
+}
