@@ -71,7 +71,7 @@ function Home() {
       <div className="text-xl gap-10 w-[100%]" id="tasks">
         {tasks?.map((e) => (
           <div
-            className={`flex gap-10 bg-gray-300 border-2 w-[30%] max-md:w-[70%] max-sm:w-[80%] m-auto border-gray-400 justify-between overflow-x-hidden rounded-md px-4 py-3 ${(isSeeingAll || isRegistering || editing) && 'blur-sm'} ${theme == 'light' ? 'bg-gray-200  border-blue-900 hover:bg-gray-500 hover:text-white' : 'bg-gray-900 text-white border-blue-900 hover:bg-blue-800'}`}
+            className={`flex gap-10 bg-gray-300 border-2 w-[30%] max-md:w-[70%] max-sm:w-[80%] m-auto border-gray-400 justify-between overflow-x-hidden rounded-md px-4 py-3 ${(isSeeingAll || isRegistering || editing) && 'blur-sm'} ${theme == 'light' ? 'bg-gray-200  border-blue-950 hover:bg-gray-500 hover:text-white' : 'bg-gray-900 text-white border-blue-800 hover:bg-blue-800'}`}
             key={e?.id}
           >
             <p onClick={() => {
