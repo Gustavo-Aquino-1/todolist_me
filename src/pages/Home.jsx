@@ -5,14 +5,18 @@ import "../App.css";
 import { CiEdit } from "react-icons/ci";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { FaCheckDouble } from "react-icons/fa6";
+import { TbUrgent } from "react-icons/tb";
 import { VscError } from "react-icons/vsc";
+import { IoMoonSharp } from "react-icons/io5";
+import { FaSun } from "react-icons/fa6";
+
 
 function Home() {
   const [isRegistering, setIsRegistering] = useState(false);
   const [editing, setIsEditing] = useState(false);
   const [isSeeingAll, setIsSeeingAll] = useState(false)
   const [id, setId] = useState();
-  const { tasks, setTasks } = useContext(Context);
+  const { tasks, setTasks, theme, setTheme } = useContext(Context);
   const [actualTask, setActualTask] = useState(null)
 
   function remove(id) {
@@ -20,9 +24,14 @@ function Home() {
   }
 
   return (
-    <div className="w-[100%] min-h-[100vh] flex items-center flex-col gap-[50px] mt-20">
+    <div className={`w-[100%] min-h-[100vh] flex items-center flex-col gap-[50px] p-20 relative ${theme == 'light' ? 'bg-white' : 'bg-gray-900'}`}>
+      {theme == 'light' ? (
+        <IoMoonSharp onClick={() => setTheme('dark')} color="black" className="absolute top-0 right-0 m-5 mr-10 text-xl"/>
+      ): (
+        <FaSun onClick={() => setTheme('light')} color="white" className="absolute top-0 right-0 m-5 mr-10 text-xl" />
+      )}
       <button
-        className={`bg-blue-950 text-white text-xl px-4 py-2 rounded-md ${(isSeeingAll || isRegistering || editing) && 'blur-sm'}`}
+        className={`bg-blue-950 text-white text-xl px-4 py-2 rounded-md ${(isSeeingAll || isRegistering || editing) && 'blur-sm'} hover:bg-blue-800`}
         onClick={() => setIsRegistering(!isRegistering)}
       >
         Register new task
@@ -37,8 +46,8 @@ function Home() {
       )}
       
       {isSeeingAll && (
-        <div className="overlay-seeing-task text-xl px-5 py-1 gap-3">
-            <button onClick={() => setIsSeeingAll(false)} className="w-[100%] flex justify-end mr-5 mt-5 text-red-500 hover:text-red-700">X</button>
+        <div className={`overlay-seeing-task text-xl px-5 py-1 gap-3 w-[30%] h-[30%] max-lg:w-[50%] max-md:w-[70%] max-md:h-[50%] ${theme == 'light' ? 'bg-white' : 'bg-gray-900 text-white'}`} >
+            <button onClick={() => setIsSeeingAll(false)} className={`w-[100%] flex justify-end mr-5 mt-5 text-red-500 hover:text-red-700 ${theme == 'dark' && 'text-white'}`}>X</button>
 
             <div className="w-[100%] overflow-x-auto overflow-y-auto p-5 flex flex-col gap-5">
                 <section className=" flex flex-col gap-1">
@@ -62,7 +71,7 @@ function Home() {
       <div className="text-xl gap-10 w-[100%]" id="tasks">
         {tasks?.map((e) => (
           <div
-            className={`flex gap-10 bg-gray-300 border-2 w-[30%] m-auto border-gray-400 justify-between overflow-x-hidden rounded-md p-2 ${(isSeeingAll || isRegistering || editing) && 'blur-sm'}`}
+            className={`flex gap-10 bg-gray-300 border-2 w-[30%] max-md:w-[70%] max-sm:w-[80%] m-auto border-gray-400 justify-between overflow-x-hidden rounded-md px-4 py-3 ${(isSeeingAll || isRegistering || editing) && 'blur-sm'} ${theme == 'light' ? 'bg-gray-200  border-blue-900 hover:bg-gray-500 hover:text-white' : 'bg-gray-900 text-white border-blue-900 hover:bg-blue-800'}`}
             key={e?.id}
           >
             <p onClick={() => {
@@ -76,7 +85,7 @@ function Home() {
                 {e?.status == "finished" ? (
                   <FaCheckDouble color="green" />
                 ) : (
-                  <VscError />
+                  <TbUrgent className="text-orange-400" />
                 )}
               </p>
               <button
